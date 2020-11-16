@@ -69,6 +69,7 @@ public class Main extends javax.swing.JFrame {
         btn7 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Software de Mantenimiento");
 
         jPanel1.setBackground(new java.awt.Color(132, 160, 222));
 
@@ -86,6 +87,11 @@ public class Main extends javax.swing.JFrame {
 
         btnAgregarMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgregarMaquinas.setText("Agregar");
+        btnAgregarMaquinas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarMaquinasActionPerformed(evt);
+            }
+        });
 
         btnEliminarMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEliminarMaquinas.setText("Eliminar");
@@ -313,6 +319,11 @@ public class Main extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAgregarMaquinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMaquinasActionPerformed
+        AddMachine machine = new AddMachine(this, true);
+        machine.setVisible(true);
+    }//GEN-LAST:event_btnAgregarMaquinasActionPerformed
 
     /**
      * @param args the command line arguments
