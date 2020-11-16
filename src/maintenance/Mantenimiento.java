@@ -5,6 +5,7 @@
  */
 package maintenance;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -12,7 +13,7 @@ import java.util.LinkedList;
  *
  * @author John
  */
-public class Mantenimiento {
+public class Mantenimiento implements Serializable{
     
     private String nombre;
     private String tipo;

@@ -5,6 +5,7 @@
  */
 package maintenance;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -12,7 +13,7 @@ import java.util.LinkedList;
  *
  * @author John
  */
-public class Maquina {
+public class Maquina implements Serializable{
     
     private String nombre;
     private String modelo;
@@ -20,9 +21,17 @@ public class Maquina {
     private Date fechaCompra;
     private Date fechaFabricacion;
     private String lugarFabricacion;
+    private byte[] imagen;
     private LinkedList<Mantenimiento> mantenimientos;
     
-    public Maquina(){
+    public Maquina(String nombre, String modelo, String noSerie, Date fechaCompra, Date fechaFabricacion, String lugarFabricacion, byte[] imagen){
+        this.nombre = nombre;
+        this.modelo = modelo;
+        this.NoSerie = noSerie;
+        this.fechaCompra = fechaCompra;
+        this.fechaFabricacion = fechaFabricacion;
+        this.lugarFabricacion = lugarFabricacion;
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -71,6 +80,14 @@ public class Maquina {
 
     public void setLugarFabricacion(String lugarFabricacion) {
         this.lugarFabricacion = lugarFabricacion;
+    }
+
+    public byte[] getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
     
     

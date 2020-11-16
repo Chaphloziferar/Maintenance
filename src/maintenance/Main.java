@@ -5,7 +5,18 @@
  */
 package maintenance;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.text.SimpleDateFormat;
+import java.util.LinkedList;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 /**
@@ -14,9 +25,9 @@ import javax.swing.SwingConstants;
  */
 public class Main extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Main
-     */
+    public static LinkedList<Maquina> maquinas = new LinkedList<>();
+    public static Maquina machine;
+    
     public Main() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -25,8 +36,38 @@ public class Main extends javax.swing.JFrame {
     }
     
     private void inicializarComponentes(){
+        File file = new File("Maquinas.dat");
+        
+        if(file.exists()){
+            try{
+                ObjectInputStream ois = new  ObjectInputStream(new FileInputStream("Maquinas.dat"));
+                Main.maquinas = (LinkedList<Maquina>) ois.readObject();
+                ois.close();
+            }catch(IOException | ClassNotFoundException e){
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+        DefaultListModel model = new DefaultListModel();
+        
+        if(maquinas.isEmpty()){
+            model.clear();
+            listMaquinas.setModel(model);
+        }else{
+            this.RefrescarListaMaquina();
+        }
+        
         DefaultListCellRenderer cellRenderer = (DefaultListCellRenderer)listMaquinas.getCellRenderer();
         cellRenderer.setHorizontalAlignment(SwingConstants .CENTER);
+    }
+    
+    public static void RefrescarListaMaquina(){
+        DefaultListModel model = new DefaultListModel();
+        model.clear();
+        for(Maquina m : Main.maquinas){
+            model.addElement(m.getNombre());
+        }
+        listMaquinas.setModel(model);
     }
 
     /**
@@ -48,10 +89,11 @@ public class Main extends javax.swing.JFrame {
         btnEliminarMaquinas = new javax.swing.JButton();
         btnDetallesMaquinas = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        panelImagen = new javax.swing.JPanel();
+        lblImagen = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDetalles = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
@@ -84,6 +126,7 @@ public class Main extends javax.swing.JFrame {
         jTextField6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField6.setText("Lista de Máquinas");
+        jTextField6.setEnabled(false);
 
         btnAgregarMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgregarMaquinas.setText("Agregar");
@@ -98,6 +141,11 @@ public class Main extends javax.swing.JFrame {
 
         btnDetallesMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnDetallesMaquinas.setText("Ver Detalles");
+        btnDetallesMaquinas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDetallesMaquinasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,42 +183,49 @@ public class Main extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(119, 137, 193));
 
-        jPanel3.setPreferredSize(new java.awt.Dimension(155, 155));
+        panelImagen.setBackground(new java.awt.Color(255, 255, 255));
+        panelImagen.setPreferredSize(new java.awt.Dimension(155, 155));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 155, Short.MAX_VALUE)
+        javax.swing.GroupLayout panelImagenLayout = new javax.swing.GroupLayout(panelImagen);
+        panelImagen.setLayout(panelImagenLayout);
+        panelImagenLayout.setHorizontalGroup(
+            panelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 155, Short.MAX_VALUE)
+        panelImagenLayout.setVerticalGroup(
+            panelImagenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
         );
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jTextField1.setText("Nombre de máquina");
+        txtNombre.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtNombre.setText("Nombre de máquina");
+        txtNombre.setEnabled(false);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Modelo:\nNo. Serie:\nFecha de Compra:\nFecha Fabricacion:\nMade in ");
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDetalles.setColumns(20);
+        txtDetalles.setRows(5);
+        txtDetalles.setText("Modelo:\nNo. Serie:\nFecha de Compra:\nFecha Fabricacion:\nMade in ");
+        txtDetalles.setEnabled(false);
+        jScrollPane1.setViewportView(txtDetalles);
 
         jTextField2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setText("Tipos de Mantenimiento");
+        jTextField2.setEnabled(false);
 
         jTextField3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField3.setText("Predictivo");
+        jTextField3.setEnabled(false);
 
         jTextField4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField4.setText("Preventivo");
+        jTextField4.setEnabled(false);
 
         jTextField5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField5.setText("Correctivo");
+        jTextField5.setEnabled(false);
 
         listPreventivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         listPreventivo.setModel(new javax.swing.AbstractListModel() {
@@ -219,10 +274,10 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(147, 147, 147)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1)
+                            .addComponent(txtNombre)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -263,9 +318,9 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(47, 47, 47)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
@@ -325,6 +380,36 @@ public class Main extends javax.swing.JFrame {
         machine.setVisible(true);
     }//GEN-LAST:event_btnAgregarMaquinasActionPerformed
 
+    private void btnDetallesMaquinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetallesMaquinasActionPerformed
+        for(Maquina m : Main.maquinas){
+            if(m.getNombre().equals(listMaquinas.getSelectedValue().toString())){
+                machine = m;
+                break;
+            }
+        }
+        
+        this.LLenarDetalles();
+    }//GEN-LAST:event_btnDetallesMaquinasActionPerformed
+
+    private void LLenarDetalles(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        
+        txtNombre.setText(machine.getNombre());
+        
+        txtDetalles.setText(
+                "Modelo: " + machine.getModelo() + "\n" + 
+                "No. Serie: " + machine.getNoSerie()+ "\n" +
+                "Fecha de Compra: " + dateFormat.format(machine.getFechaCompra())+ "\n" +
+                "Fecha Fabricacion: " + dateFormat.format(machine.getFechaFabricacion()) + "\n" +
+                "Made in " + machine.getLugarFabricacion()
+                        );
+        
+        ImageIcon ico = new ImageIcon(machine.getImagen());
+        Icon icono = new ImageIcon(ico.getImage().getScaledInstance(220, 180, Image.SCALE_DEFAULT));
+        lblImagen.setIcon(icono);
+        this.repaint();
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -370,7 +455,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarMaquinas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -378,17 +462,19 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JLabel lblImagen;
     private javax.swing.JList listCorrectivo;
-    private javax.swing.JList listMaquinas;
+    private static javax.swing.JList listMaquinas;
     private javax.swing.JList listPredictivo;
     private javax.swing.JList listPreventivo;
     private javax.swing.JPanel mainContainer;
+    private javax.swing.JPanel panelImagen;
+    private javax.swing.JTextArea txtDetalles;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

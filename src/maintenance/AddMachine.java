@@ -8,12 +8,18 @@ package maintenance;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -22,9 +28,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class AddMachine extends javax.swing.JDialog {
 
-    /**
-     * Creates new form AddMachine
-     */
+    private int validos = 0;
+    
     public AddMachine(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -155,6 +160,7 @@ public class AddMachine extends javax.swing.JDialog {
 
         btnAgregar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgregar.setText("Agregar Maquina");
+        btnAgregar.setEnabled(false);
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarActionPerformed(evt);
@@ -276,7 +282,7 @@ public class AddMachine extends javax.swing.JDialog {
         JFileChooser selectorArchivos = new JFileChooser();
         selectorArchivos.setFileSelectionMode(JFileChooser.FILES_ONLY);
         selectorArchivos.setAcceptAllFileFilterUsed(false);
-        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Imagenes png", "png");
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de imagen(.png,.jpg, .jpeg)", "png", "jpg", "jpeg");
         selectorArchivos.setFileFilter(filtro);
 
         try {
@@ -293,6 +299,8 @@ public class AddMachine extends javax.swing.JDialog {
             Icon icono = new ImageIcon(ico.getImage().getScaledInstance(220, 180, Image.SCALE_DEFAULT));
             lblImagen.setIcon(icono);
             this.repaint();
+            
+            btnAgregar.setEnabled(true);
 
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
@@ -303,6 +311,8 @@ public class AddMachine extends javax.swing.JDialog {
         if(field.getText().trim().equals(texto)){
             field.setForeground(Color.black);
             field.setText(null);
+            
+            validos++;
         }
     }
     
@@ -311,8 +321,13 @@ public class AddMachine extends javax.swing.JDialog {
             field.setForeground(Color.gray);
             field.setText(texto);
             
+            validos--;
             btnAgregar.requestFocus();
         }
+    }
+    
+    private boolean TextFieldRellenado(JTextField txt){
+        return !txt.getText().trim().isEmpty();
     }
     
     private void txtNombreMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNombreMouseEntered
@@ -348,7 +363,36 @@ public class AddMachine extends javax.swing.JDialog {
     }//GEN-LAST:event_txtLugarMouseExited
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+        if(TextFieldRellenado(txtNombre) && TextFieldRellenado(txtModelo) && TextFieldRellenado(txtSerie) && TextFieldRellenado(txtSerie) && (validos == 4)){
+            
+            File file = new File(txtRuta.getText());
+            byte[] bFile = new byte[(int)file.length()];
+        
+            try{
+                FileInputStream fileInputStream = new FileInputStream(file);
+                fileInputStream.read(bFile);
+                fileInputStream.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            
+            Maquina maquina = new Maquina(txtNombre.getText(), txtModelo.getText(), txtSerie.getText(), dcFabricacion.getDate(), 
+                    dcFabricacion.getDate(), txtLugar.getText(), bFile);
+            Main.maquinas.add(maquina);
+            
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Maquinas.dat"));
+                oos.writeObject(Main.maquinas);
+                oos.close();
+                JOptionPane.showMessageDialog(null, "Datos guardados exitosamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                Main.RefrescarListaMaquina();
+                this.dispose();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe llenar todos los campos", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
