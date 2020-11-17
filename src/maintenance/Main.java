@@ -105,10 +105,10 @@ public class Main extends javax.swing.JFrame {
         listPredictivo = new javax.swing.JList();
         jScrollPane4 = new javax.swing.JScrollPane();
         listCorrectivo = new javax.swing.JList();
-        btn4 = new javax.swing.JButton();
-        btn5 = new javax.swing.JButton();
-        btn6 = new javax.swing.JButton();
-        btn7 = new javax.swing.JButton();
+        btnDetallesMantenimiento = new javax.swing.JButton();
+        btnAgregarMantenimiento = new javax.swing.JButton();
+        btnEditarMantenimiento = new javax.swing.JButton();
+        btnEliminarMantenimiento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Software de Mantenimiento");
@@ -116,10 +116,10 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(132, 160, 222));
 
         listMaquinas.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        listMaquinas.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Maquina Numero 1", "Maquina Numero 2", "Maquina Numero 3", "Maquina Numero 4" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        listMaquinas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                listMaquinasMousePressed(evt);
+            }
         });
         jScrollPane5.setViewportView(listMaquinas);
 
@@ -138,9 +138,11 @@ public class Main extends javax.swing.JFrame {
 
         btnEliminarMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEliminarMaquinas.setText("Eliminar");
+        btnEliminarMaquinas.setEnabled(false);
 
         btnDetallesMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnDetallesMaquinas.setText("Ver Detalles");
+        btnDetallesMaquinas.setEnabled(false);
         btnDetallesMaquinas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDetallesMaquinasActionPerformed(evt);
@@ -228,40 +230,34 @@ public class Main extends javax.swing.JFrame {
         jTextField5.setEnabled(false);
 
         listPreventivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        listPreventivo.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Limpieza de los componentes", "Limpieza de los componentes", "Limpieza de los componentes", "Limpieza de los componentes" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane2.setViewportView(listPreventivo);
 
         listPredictivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        listPredictivo.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Cambio de pieza", "Cambio de pieza", "Cambio de pieza", "Cambio de pieza" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane3.setViewportView(listPredictivo);
 
         listCorrectivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        listCorrectivo.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Reparación de partes", "Reparación de partes", "Reparación de partes", "Reparación de partes" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane4.setViewportView(listCorrectivo);
 
-        btn4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btn4.setText("Ver Detalles");
+        btnDetallesMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnDetallesMantenimiento.setText("Ver Detalles");
+        btnDetallesMantenimiento.setEnabled(false);
 
-        btn5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btn5.setText("Agregar");
+        btnAgregarMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAgregarMantenimiento.setText("Agregar");
+        btnAgregarMantenimiento.setEnabled(false);
+        btnAgregarMantenimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarMantenimientoActionPerformed(evt);
+            }
+        });
 
-        btn6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btn6.setText("Ver Detalles");
+        btnEditarMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnEditarMantenimiento.setText("Editar");
+        btnEditarMantenimiento.setEnabled(false);
 
-        btn7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btn7.setText("Eliminar");
+        btnEliminarMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnEliminarMantenimiento.setText("Eliminar");
+        btnEliminarMantenimiento.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -304,13 +300,13 @@ public class Main extends javax.swing.JFrame {
                                 .addGap(2, 2, 2))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGap(27, 27, 27)
-                        .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnDetallesMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAgregarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btn7, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnEliminarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(44, 44, 44))
         );
         jPanel2Layout.setVerticalGroup(
@@ -339,10 +335,10 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn7, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnDetallesMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAgregarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEliminarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
 
@@ -389,7 +385,20 @@ public class Main extends javax.swing.JFrame {
         }
         
         this.LLenarDetalles();
+        
+        btnAgregarMantenimiento.setEnabled(true);
     }//GEN-LAST:event_btnDetallesMaquinasActionPerformed
+
+    private void btnAgregarMantenimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarMantenimientoActionPerformed
+        AddMaintenance.pos = Main.maquinas.indexOf(machine);
+        AddMaintenance maintenance = new AddMaintenance(this, true);
+        maintenance.setVisible(true);
+    }//GEN-LAST:event_btnAgregarMantenimientoActionPerformed
+
+    private void listMaquinasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listMaquinasMousePressed
+        btnDetallesMaquinas.setEnabled(true);
+        btnEliminarMaquinas.setEnabled(true);
+    }//GEN-LAST:event_listMaquinasMousePressed
 
     private void LLenarDetalles(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -446,12 +455,12 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn4;
-    private javax.swing.JButton btn5;
-    private javax.swing.JButton btn6;
-    private javax.swing.JButton btn7;
+    private javax.swing.JButton btnAgregarMantenimiento;
     private javax.swing.JButton btnAgregarMaquinas;
+    private javax.swing.JButton btnDetallesMantenimiento;
     private javax.swing.JButton btnDetallesMaquinas;
+    private javax.swing.JButton btnEditarMantenimiento;
+    private javax.swing.JButton btnEliminarMantenimiento;
     private javax.swing.JButton btnEliminarMaquinas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

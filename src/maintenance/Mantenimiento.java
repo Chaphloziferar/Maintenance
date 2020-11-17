@@ -19,7 +19,7 @@ public class Mantenimiento implements Serializable{
     private String tipo;
     private double costo;
     private double duracion;
-    private double frecuencia;
+    private int frecuencia;
     private LinkedList<Date> fechas;
     
     public Mantenimiento(){
@@ -57,11 +57,11 @@ public class Mantenimiento implements Serializable{
         this.duracion = duracion;
     }
 
-    public double getFrecuencia() {
+    public int getFrecuencia() {
         return frecuencia;
     }
 
-    public void setFrecuencia(double frecuencia) {
+    public void setFrecuencia(int frecuencia) {
         this.frecuencia = frecuencia;
     }
     
