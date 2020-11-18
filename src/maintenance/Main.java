@@ -59,6 +59,15 @@ public class Main extends javax.swing.JFrame {
         
         DefaultListCellRenderer cellRenderer = (DefaultListCellRenderer)listMaquinas.getCellRenderer();
         cellRenderer.setHorizontalAlignment(SwingConstants .CENTER);
+        
+        DefaultListCellRenderer cellRenderer1 = (DefaultListCellRenderer)listPreventivo.getCellRenderer();
+        cellRenderer1.setHorizontalAlignment(SwingConstants .CENTER);
+        
+        DefaultListCellRenderer cellRenderer2 = (DefaultListCellRenderer)listPredictivo.getCellRenderer();
+        cellRenderer2.setHorizontalAlignment(SwingConstants .CENTER);
+        
+        DefaultListCellRenderer cellRenderer3 = (DefaultListCellRenderer)listCorrectivo.getCellRenderer();
+        cellRenderer3.setHorizontalAlignment(SwingConstants .CENTER);
     }
     
     public static void RefrescarListaMaquina(){
@@ -68,6 +77,33 @@ public class Main extends javax.swing.JFrame {
             model.addElement(m.getNombre());
         }
         listMaquinas.setModel(model);
+    }
+    
+    public void RefrescarListaMantenimiento(){
+        DefaultListModel modelPreventivo = new DefaultListModel();
+        DefaultListModel modelPredictivo = new DefaultListModel();
+        DefaultListModel modelCorrectivo = new DefaultListModel();
+        
+        modelPreventivo.clear();
+        modelPredictivo.clear();
+        modelCorrectivo.clear();
+        
+        for(Mantenimiento m : machine.getMantenimientos()){
+            switch(m.getTipo()){
+                case "Preventivo":
+                    modelPreventivo.addElement(m.getNombre());
+                    break;
+                case "Predictivo":
+                    modelPredictivo.addElement(m.getNombre());
+                    break;
+                case "Correctivo":
+                    modelCorrectivo.addElement(m.getNombre());
+                    break;
+            }
+        }
+        listPreventivo.setModel(modelPreventivo);
+        listPredictivo.setModel(modelPredictivo);
+        listCorrectivo.setModel(modelCorrectivo);
     }
 
     /**
@@ -385,6 +421,7 @@ public class Main extends javax.swing.JFrame {
         }
         
         this.LLenarDetalles();
+        this.RefrescarListaMantenimiento();
         
         btnAgregarMantenimiento.setEnabled(true);
     }//GEN-LAST:event_btnDetallesMaquinasActionPerformed
