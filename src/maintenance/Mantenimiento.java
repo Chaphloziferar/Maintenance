@@ -88,7 +88,7 @@ public class Mantenimiento implements Serializable{
         this.fechas.add(fecha);
     }
 
-    public LinkedList<Date> getMantenimientos() {
+    public LinkedList<Date> getFechas() {
         return fechas;
     }
     

@@ -16,6 +16,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
@@ -141,10 +142,7 @@ public class Main extends javax.swing.JFrame {
         listPredictivo = new javax.swing.JList();
         jScrollPane4 = new javax.swing.JScrollPane();
         listCorrectivo = new javax.swing.JList();
-        btnDetallesMantenimiento = new javax.swing.JButton();
         btnAgregarMantenimiento = new javax.swing.JButton();
-        btnEditarMantenimiento = new javax.swing.JButton();
-        btnEliminarMantenimiento = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Software de Mantenimiento");
@@ -175,6 +173,11 @@ public class Main extends javax.swing.JFrame {
         btnEliminarMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnEliminarMaquinas.setText("Eliminar");
         btnEliminarMaquinas.setEnabled(false);
+        btnEliminarMaquinas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarMaquinasActionPerformed(evt);
+            }
+        });
 
         btnDetallesMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnDetallesMaquinas.setText("Ver Detalles");
@@ -236,7 +239,7 @@ public class Main extends javax.swing.JFrame {
         );
 
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtNombre.setText("Nombre de máquina");
+        txtNombre.setText("Nombre de maquina");
         txtNombre.setEnabled(false);
 
         txtDetalles.setColumns(20);
@@ -266,20 +269,31 @@ public class Main extends javax.swing.JFrame {
         jTextField5.setEnabled(false);
 
         listPreventivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        listPreventivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listPreventivoMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(listPreventivo);
 
         listPredictivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        listPredictivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listPredictivoMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(listPredictivo);
 
         listCorrectivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        listCorrectivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                listCorrectivoMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(listCorrectivo);
 
-        btnDetallesMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnDetallesMantenimiento.setText("Ver Detalles");
-        btnDetallesMantenimiento.setEnabled(false);
-
         btnAgregarMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAgregarMantenimiento.setText("Agregar");
+        btnAgregarMantenimiento.setText("Agregar Nuevo Mantenimiento");
         btnAgregarMantenimiento.setEnabled(false);
         btnAgregarMantenimiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -287,31 +301,10 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        btnEditarMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnEditarMantenimiento.setText("Editar");
-        btnEditarMantenimiento.setEnabled(false);
-
-        btnEliminarMantenimiento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnEliminarMantenimiento.setText("Eliminar");
-        btnEliminarMantenimiento.setEnabled(false);
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(213, 213, 213)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(147, 147, 147)
-                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtNombre)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(40, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -333,17 +326,24 @@ public class Main extends javax.swing.JFrame {
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(2, 2, 2))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(btnDetallesMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAgregarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEditarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnEliminarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(2, 2, 2)))))
                 .addGap(44, 44, 44))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(213, 213, 213)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(147, 147, 147)
+                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtNombre)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(245, 245, 245)
+                        .addComponent(btnAgregarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -369,13 +369,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnDetallesMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(btnAgregarMantenimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout mainContainerLayout = new javax.swing.GroupLayout(mainContainer);
@@ -437,6 +433,55 @@ public class Main extends javax.swing.JFrame {
         btnEliminarMaquinas.setEnabled(true);
     }//GEN-LAST:event_listMaquinasMousePressed
 
+    private void listPreventivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listPreventivoMouseClicked
+        JList list = (JList)evt.getSource();
+        if (evt.getClickCount() == 2) {
+            for(Mantenimiento m : machine.getMantenimientos()){
+                if(m.getNombre().equals(listPreventivo.getSelectedValue().toString())){
+                    for(int i=0; i<m.getFechas().size(); i++){
+                        System.out.println(m.getFechas().get(i));
+                        System.out.println("Costo = " + m.getCosto());
+                    }
+                    System.out.println("Costo total = " + m.getCostoTotal());
+                }
+            }
+        }
+    }//GEN-LAST:event_listPreventivoMouseClicked
+
+    private void listPredictivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listPredictivoMouseClicked
+        JList list = (JList)evt.getSource();
+        if (evt.getClickCount() == 2) {
+            for(Mantenimiento m : machine.getMantenimientos()){
+                if(m.getNombre().equals(listPredictivo.getSelectedValue().toString())){
+                    for(int i=0; i<m.getFechas().size(); i++){
+                        System.out.println(m.getFechas().get(i));
+                        System.out.println("Costo = " + m.getCosto());
+                    }
+                    System.out.println("Costo total = " + m.getCostoTotal());
+                }
+            }
+        }
+    }//GEN-LAST:event_listPredictivoMouseClicked
+
+    private void listCorrectivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCorrectivoMouseClicked
+        JList list = (JList)evt.getSource();
+        if (evt.getClickCount() == 2) {
+            for(Mantenimiento m : machine.getMantenimientos()){
+                if(m.getNombre().equals(listCorrectivo.getSelectedValue().toString())){
+                    for(int i=0; i<m.getFechas().size(); i++){
+                        System.out.println(m.getFechas().get(i));
+                        System.out.println("Costo = " + m.getCosto());
+                    }
+                    System.out.println("Costo total = " + m.getCostoTotal());
+                }
+            }
+        }
+    }//GEN-LAST:event_listCorrectivoMouseClicked
+
+    private void btnEliminarMaquinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarMaquinasActionPerformed
+        this.ResetScreen();
+    }//GEN-LAST:event_btnEliminarMaquinasActionPerformed
+
     private void LLenarDetalles(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         
@@ -454,6 +499,33 @@ public class Main extends javax.swing.JFrame {
         Icon icono = new ImageIcon(ico.getImage().getScaledInstance(220, 180, Image.SCALE_DEFAULT));
         lblImagen.setIcon(icono);
         this.repaint();
+    }
+    
+    private void ResetScreen(){
+        txtNombre.setText("Nombre de Maquina");
+        
+        txtDetalles.setText(
+                "Modelo: " + "\n" + 
+                "No. Serie: " + "\n" +
+                "Fecha de Compra: " + "\n" +
+                "Fecha Fabricacion: " + "\n" +
+                "Made in "
+                        );
+        
+        lblImagen.setIcon(null);
+        this.repaint();
+        
+        DefaultListModel modelPreventivo = new DefaultListModel();
+        DefaultListModel modelPredictivo = new DefaultListModel();
+        DefaultListModel modelCorrectivo = new DefaultListModel();
+        
+        modelPreventivo.clear();
+        modelPredictivo.clear();
+        modelCorrectivo.clear();
+        
+        listPreventivo.setModel(modelPreventivo);
+        listPredictivo.setModel(modelPredictivo);
+        listCorrectivo.setModel(modelCorrectivo);
     }
     
     /**
@@ -494,10 +566,7 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarMantenimiento;
     private javax.swing.JButton btnAgregarMaquinas;
-    private javax.swing.JButton btnDetallesMantenimiento;
     private javax.swing.JButton btnDetallesMaquinas;
-    private javax.swing.JButton btnEditarMantenimiento;
-    private javax.swing.JButton btnEliminarMantenimiento;
     private javax.swing.JButton btnEliminarMaquinas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
