@@ -22,14 +22,18 @@ public class Mantenimiento implements Serializable{
     private double costo;
     private double duracion;
     private int frecuencia;
+    private double costoTotal;
     public LinkedList<Date> fechas;
     
-    public Mantenimiento(String nombre, String tipo, double costo, double duración, int frecuencia){
+    public Mantenimiento(String nombre, String tipo, double costo, double duración, int frecuencia, double costoTotal){
         this.nombre = nombre;
         this.tipo = tipo;
         this.costo = costo;
         this.duracion = duración;
         this.frecuencia = frecuencia;
+        this.costoTotal = costoTotal;
+        
+        this.fechas = new LinkedList<>();
     }
 
     public String getNombre() {
@@ -70,6 +74,22 @@ public class Mantenimiento implements Serializable{
 
     public void setFrecuencia(int frecuencia) {
         this.frecuencia = frecuencia;
+    }
+
+    public double getCostoTotal() {
+        return costoTotal;
+    }
+
+    public void setCostoTotal(double costoTotal) {
+        this.costoTotal = costoTotal;
+    }
+    
+    public void AddList(Date fecha){
+        this.fechas.add(fecha);
+    }
+
+    public LinkedList<Date> getMantenimientos() {
+        return fechas;
     }
     
 }

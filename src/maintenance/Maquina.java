@@ -24,7 +24,7 @@ public class Maquina implements Serializable{
     private Date fechaFabricacion;
     private String lugarFabricacion;
     private byte[] imagen;
-    public LinkedList<Mantenimiento> mantenimientos;
+    private LinkedList<Mantenimiento> mantenimientos;
     
     public Maquina(String nombre, String modelo, String noSerie, Date fechaCompra, Date fechaFabricacion, String lugarFabricacion, byte[] imagen){
         this.nombre = nombre;
@@ -34,6 +34,8 @@ public class Maquina implements Serializable{
         this.fechaFabricacion = fechaFabricacion;
         this.lugarFabricacion = lugarFabricacion;
         this.imagen = imagen;
+        
+        this.mantenimientos = new LinkedList<>();
     }
 
     public String getNombre() {
@@ -92,6 +94,12 @@ public class Maquina implements Serializable{
         this.imagen = imagen;
     }
     
-    
+    public void AddList(Mantenimiento mantenimiento){
+        this.mantenimientos.add(mantenimiento);
+    }
+
+    public LinkedList<Mantenimiento> getMantenimientos() {
+        return mantenimientos;
+    }
     
 }

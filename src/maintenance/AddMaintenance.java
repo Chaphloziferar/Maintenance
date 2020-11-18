@@ -10,6 +10,11 @@ import java.awt.Image;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -37,6 +42,7 @@ public class AddMaintenance extends javax.swing.JDialog {
         txtCosto.setForeground(Color.gray);
         txtDuracion.setForeground(Color.gray);
         txtFrecuencia.setForeground(Color.gray);
+        txtCantidad.setForeground(Color.gray);
         
         txtNombreMaquina.setText(Main.maquinas.get(pos).getNombre());
         txtModeloMaquina.setText(Main.maquinas.get(pos).getModelo());
@@ -45,6 +51,8 @@ public class AddMaintenance extends javax.swing.JDialog {
         Icon icono = new ImageIcon(ico.getImage().getScaledInstance(220, 180, Image.SCALE_DEFAULT));
         lblImagen.setIcon(icono);
         this.repaint();
+        
+        dcFecha.setDate(new Date());
     }
 
     /**
@@ -69,6 +77,9 @@ public class AddMaintenance extends javax.swing.JDialog {
         cbTipo = new javax.swing.JComboBox();
         btnAgregar = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        dcFecha = new com.toedter.calendar.JDateChooser();
+        txtCantidad = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -127,7 +138,8 @@ public class AddMaintenance extends javax.swing.JDialog {
 
         txtFrecuencia.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtFrecuencia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtFrecuencia.setText("Frecuencia");
+        txtFrecuencia.setText("Frecuencia (Dias)");
+        txtFrecuencia.setPreferredSize(new java.awt.Dimension(125, 23));
         txtFrecuencia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 txtFrecuenciaMouseEntered(evt);
@@ -144,7 +156,8 @@ public class AddMaintenance extends javax.swing.JDialog {
 
         txtDuracion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtDuracion.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtDuracion.setText("Duracion");
+        txtDuracion.setText("Duracion (Horas)");
+        txtDuracion.setPreferredSize(new java.awt.Dimension(125, 23));
         txtDuracion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 txtDuracionMouseEntered(evt);
@@ -181,6 +194,30 @@ public class AddMaintenance extends javax.swing.JDialog {
             }
         });
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Fecha de Inicio:");
+
+        dcFecha.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        txtCantidad.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtCantidad.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtCantidad.setText("No. Mantenimientos");
+        txtCantidad.setPreferredSize(new java.awt.Dimension(125, 23));
+        txtCantidad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtCantidadMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                txtCantidadMouseExited(evt);
+            }
+        });
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout MainContainerLayout = new javax.swing.GroupLayout(MainContainer);
         MainContainer.setLayout(MainContainerLayout);
         MainContainerLayout.setHorizontalGroup(
@@ -192,28 +229,39 @@ public class AddMaintenance extends javax.swing.JDialog {
                         .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(71, 71, 71)
                         .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(MainContainerLayout.createSequentialGroup()
-                        .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtDuracion, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, MainContainerLayout.createSequentialGroup()
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(71, 71, 71)
-                        .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtFrecuencia, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
-                            .addComponent(btnCerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(112, 112, 112))
             .addGroup(MainContainerLayout.createSequentialGroup()
-                .addGap(144, 144, 144)
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainContainerLayout.createSequentialGroup()
-                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(37, 37, 37)
-                        .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtNombreMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtModeloMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(144, 144, 144)
+                        .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(MainContainerLayout.createSequentialGroup()
+                                    .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(37, 37, 37)
+                                    .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtNombreMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtModeloMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(MainContainerLayout.createSequentialGroup()
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(dcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(13, 13, 13)))
+                            .addGroup(MainContainerLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(MainContainerLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(93, 93, 93)
+                        .addComponent(txtDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(txtFrecuencia, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainContainerLayout.setVerticalGroup(
@@ -222,29 +270,35 @@ public class AddMaintenance extends javax.swing.JDialog {
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainContainerLayout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
                     .addGroup(MainContainerLayout.createSequentialGroup()
                         .addGap(72, 72, 72)
                         .addComponent(txtNombreMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtModeloMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addComponent(txtModeloMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)))
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(18, 18, 18)
+                .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dcFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCosto, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(28, 28, 28)
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFrecuencia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                    .addComponent(txtFrecuencia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51))
+                .addGap(40, 40, 40))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -301,19 +355,19 @@ public class AddMaintenance extends javax.swing.JDialog {
     }//GEN-LAST:event_txtCostoMouseExited
 
     private void txtDuracionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDuracionMouseEntered
-        IniciarPlaceHolder(txtDuracion, "Duracion");
+        IniciarPlaceHolder(txtDuracion, "Duracion (Horas)");
     }//GEN-LAST:event_txtDuracionMouseEntered
 
     private void txtDuracionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtDuracionMouseExited
-        TerminarPlaceHolder(txtDuracion, "Duracion");
+        TerminarPlaceHolder(txtDuracion, "Duracion (Horas)");
     }//GEN-LAST:event_txtDuracionMouseExited
 
     private void txtFrecuenciaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFrecuenciaMouseEntered
-        IniciarPlaceHolder(txtFrecuencia, "Frecuencia");
+        IniciarPlaceHolder(txtFrecuencia, "Frecuencia (Dias)");
     }//GEN-LAST:event_txtFrecuenciaMouseEntered
 
     private void txtFrecuenciaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFrecuenciaMouseExited
-        TerminarPlaceHolder(txtFrecuencia, "Frecuencia");
+        TerminarPlaceHolder(txtFrecuencia, "Frecuencia (Dias)");
     }//GEN-LAST:event_txtFrecuenciaMouseExited
 
     private void txtCostoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCostoKeyTyped
@@ -345,11 +399,30 @@ public class AddMaintenance extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCerrarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        if(TextFieldRellenado(txtNombre) && TextFieldRellenado(txtCosto) && TextFieldRellenado(txtDuracion) && TextFieldRellenado(txtFrecuencia) && (validos == 4)){
-            Mantenimiento mantenimiento = new Mantenimiento(txtNombre.getText(), cbTipo.getSelectedItem().toString(), Double.parseDouble(txtCosto.getText()),
-                                            Double.parseDouble(txtDuracion.getText()), Integer.parseInt(txtFrecuencia.getText()));
+        if(TextFieldRellenado(txtNombre) && TextFieldRellenado(txtCosto) && TextFieldRellenado(txtDuracion) && TextFieldRellenado(txtFrecuencia) 
+                && TextFieldRellenado(txtCantidad) && (validos == 5)){
             
-            Main.maquinas.get(pos).mantenimientos.add(mantenimiento);
+            int cantidad = Integer.parseInt(txtCantidad.getText());
+            double costo = Double.parseDouble(txtCosto.getText());
+            double costoTotal = cantidad * costo;
+            
+            Mantenimiento mantenimiento = new Mantenimiento(txtNombre.getText(), cbTipo.getSelectedItem().toString(), Double.parseDouble(txtCosto.getText()),
+                                            Double.parseDouble(txtDuracion.getText()), Integer.parseInt(txtFrecuencia.getText()), costoTotal);
+            
+            Date fecha = dcFecha.getDate();
+        
+            Calendar c = Calendar.getInstance();
+            c.setTime(fecha);
+
+            DateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+
+            for(int i=0; i<cantidad; i++){
+                fecha = c.getTime();
+                mantenimiento.fechas.add(fecha);
+                c.add(GregorianCalendar.DAY_OF_WEEK, Integer.parseInt(txtFrecuencia.getText()));
+            }
+            
+            Main.maquinas.get(pos).AddList(mantenimiento);
             
             try {
                 ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Maquinas.dat"));
@@ -362,6 +435,22 @@ public class AddMaintenance extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void txtCantidadMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCantidadMouseEntered
+        IniciarPlaceHolder(txtCantidad, "No. Mantenimientos");
+    }//GEN-LAST:event_txtCantidadMouseEntered
+
+    private void txtCantidadMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCantidadMouseExited
+        TerminarPlaceHolder(txtCantidad, "No. Mantenimientos");
+    }//GEN-LAST:event_txtCantidadMouseExited
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        char input = evt.getKeyChar();
+        
+        if(((input < '0') || (input > '9'))){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
 
     /**
      * @param args the command line arguments
@@ -410,9 +499,12 @@ public class AddMaintenance extends javax.swing.JDialog {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCerrar;
     private javax.swing.JComboBox cbTipo;
+    private com.toedter.calendar.JDateChooser dcFecha;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JPanel panelImagen;
+    private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtCosto;
     private javax.swing.JTextField txtDuracion;
     private javax.swing.JTextField txtFrecuencia;
