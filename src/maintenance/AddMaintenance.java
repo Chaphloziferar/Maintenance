@@ -7,8 +7,12 @@ package maintenance;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -18,6 +22,7 @@ import javax.swing.JTextField;
 public class AddMaintenance extends javax.swing.JDialog {
 
     public static int pos;
+    private int validos = 0;
     
     public AddMaintenance(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -61,7 +66,7 @@ public class AddMaintenance extends javax.swing.JDialog {
         txtFrecuencia = new javax.swing.JTextField();
         txtDuracion = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        cbTipo = new javax.swing.JComboBox();
         btnAgregar = new javax.swing.JButton();
         btnCerrar = new javax.swing.JButton();
 
@@ -157,14 +162,24 @@ public class AddMaintenance extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Tipo de Mantenimiento:");
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preventivo", "Predictivo", "Correctivo" }));
+        cbTipo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cbTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Preventivo", "Predictivo", "Correctivo" }));
 
         btnAgregar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgregar.setText("Agregar Mantenimiento");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
 
         btnCerrar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnCerrar.setText("Cerrar Ventana");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout MainContainerLayout = new javax.swing.GroupLayout(MainContainer);
         MainContainer.setLayout(MainContainerLayout);
@@ -198,7 +213,7 @@ public class AddMaintenance extends javax.swing.JDialog {
                     .addGroup(MainContainerLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         MainContainerLayout.setVerticalGroup(
@@ -216,7 +231,7 @@ public class AddMaintenance extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -250,6 +265,8 @@ public class AddMaintenance extends javax.swing.JDialog {
         if(field.getText().trim().equals(texto)){
             field.setForeground(Color.black);
             field.setText(null);
+            
+            validos++;
         }
     }
     
@@ -257,8 +274,14 @@ public class AddMaintenance extends javax.swing.JDialog {
         if(field.getText().trim().equals("")){
             field.setForeground(Color.gray);
             field.setText(texto);
+            
+            validos--;
             btnAgregar.requestFocus();
         }
+    }
+    
+    private boolean TextFieldRellenado(JTextField txt){
+        return !txt.getText().trim().isEmpty();
     }
     
     private void txtNombreMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNombreMouseEntered
@@ -317,6 +340,29 @@ public class AddMaintenance extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_txtFrecuenciaKeyTyped
 
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        if(TextFieldRellenado(txtNombre) && TextFieldRellenado(txtCosto) && TextFieldRellenado(txtDuracion) && TextFieldRellenado(txtFrecuencia) && (validos == 4)){
+            Mantenimiento mantenimiento = new Mantenimiento(txtNombre.getText(), cbTipo.getSelectedItem().toString(), Double.parseDouble(txtCosto.getText()),
+                                            Double.parseDouble(txtDuracion.getText()), Integer.parseInt(txtFrecuencia.getText()));
+            
+            Main.maquinas.get(pos).mantenimientos.add(mantenimiento);
+            
+            try {
+                ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Maquinas.dat"));
+                oos.writeObject(Main.maquinas);
+                oos.close();
+                JOptionPane.showMessageDialog(null, "Datos guardados exitosamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -363,7 +409,7 @@ public class AddMaintenance extends javax.swing.JDialog {
     private javax.swing.JPanel MainContainer;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnCerrar;
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox cbTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JPanel panelImagen;

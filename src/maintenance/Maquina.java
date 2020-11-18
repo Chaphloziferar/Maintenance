@@ -15,6 +15,8 @@ import java.util.LinkedList;
  */
 public class Maquina implements Serializable{
     
+    private static final long serialVersionUID = 1L;
+    
     private String nombre;
     private String modelo;
     private String NoSerie;
@@ -22,7 +24,7 @@ public class Maquina implements Serializable{
     private Date fechaFabricacion;
     private String lugarFabricacion;
     private byte[] imagen;
-    private LinkedList<Mantenimiento> mantenimientos;
+    public LinkedList<Mantenimiento> mantenimientos;
     
     public Maquina(String nombre, String modelo, String noSerie, Date fechaCompra, Date fechaFabricacion, String lugarFabricacion, byte[] imagen){
         this.nombre = nombre;

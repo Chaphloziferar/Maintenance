@@ -15,14 +15,21 @@ import java.util.LinkedList;
  */
 public class Mantenimiento implements Serializable{
     
+    private static final long serialVersionUID = 1L;
+    
     private String nombre;
     private String tipo;
     private double costo;
     private double duracion;
     private int frecuencia;
-    private LinkedList<Date> fechas;
+    public LinkedList<Date> fechas;
     
-    public Mantenimiento(){
+    public Mantenimiento(String nombre, String tipo, double costo, double duración, int frecuencia){
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.costo = costo;
+        this.duracion = duración;
+        this.frecuencia = frecuencia;
     }
 
     public String getNombre() {
