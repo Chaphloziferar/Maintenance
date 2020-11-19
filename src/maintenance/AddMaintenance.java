@@ -48,7 +48,7 @@ public class AddMaintenance extends javax.swing.JDialog {
         txtModeloMaquina.setText(Main.maquinas.get(pos).getModelo());
         
         ImageIcon ico = new ImageIcon(Main.maquinas.get(pos).getImagen());
-        Icon icono = new ImageIcon(ico.getImage().getScaledInstance(220, 180, Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(ico.getImage().getScaledInstance(155, 155, Image.SCALE_DEFAULT));
         lblImagen.setIcon(icono);
         this.repaint();
         
@@ -99,13 +99,13 @@ public class AddMaintenance extends javax.swing.JDialog {
             .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
         );
 
+        txtNombreMaquina.setEditable(false);
         txtNombreMaquina.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNombreMaquina.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtNombreMaquina.setEnabled(false);
 
+        txtModeloMaquina.setEditable(false);
         txtModeloMaquina.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtModeloMaquina.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtModeloMaquina.setEnabled(false);
 
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -270,14 +270,13 @@ public class AddMaintenance extends javax.swing.JDialog {
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(MainContainerLayout.createSequentialGroup()
                         .addGap(42, 42, 42)
-                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
+                        .addComponent(panelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(MainContainerLayout.createSequentialGroup()
                         .addGap(72, 72, 72)
                         .addComponent(txtNombreMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtModeloMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)))
+                        .addComponent(txtModeloMaquina, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
                 .addGroup(MainContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(cbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -407,7 +406,7 @@ public class AddMaintenance extends javax.swing.JDialog {
             double costoTotal = cantidad * costo;
             
             Mantenimiento mantenimiento = new Mantenimiento(txtNombre.getText(), cbTipo.getSelectedItem().toString(), Double.parseDouble(txtCosto.getText()),
-                                            Double.parseDouble(txtDuracion.getText()), Integer.parseInt(txtFrecuencia.getText()), costoTotal);
+                                            Double.parseDouble(txtDuracion.getText()), Integer.parseInt(txtFrecuencia.getText()), cantidad, costoTotal);
             
             Date fecha = dcFecha.getDate();
         
@@ -429,6 +428,7 @@ public class AddMaintenance extends javax.swing.JDialog {
                 oos.writeObject(Main.maquinas);
                 oos.close();
                 JOptionPane.showMessageDialog(null, "Datos guardados exitosamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                Main.RefrescarListaMantenimiento();
                 this.dispose();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "ERROR", JOptionPane.ERROR_MESSAGE);

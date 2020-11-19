@@ -8,8 +8,10 @@ package maintenance;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import javax.swing.DefaultListCellRenderer;
@@ -80,7 +82,7 @@ public class Main extends javax.swing.JFrame {
         listMaquinas.setModel(model);
     }
     
-    public void RefrescarListaMantenimiento(){
+    public static void RefrescarListaMantenimiento(){
         DefaultListModel modelPreventivo = new DefaultListModel();
         DefaultListModel modelPredictivo = new DefaultListModel();
         DefaultListModel modelCorrectivo = new DefaultListModel();
@@ -157,10 +159,10 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(listMaquinas);
 
+        jTextField6.setEditable(false);
         jTextField6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField6.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField6.setText("Lista de Máquinas");
-        jTextField6.setEnabled(false);
 
         btnAgregarMaquinas.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnAgregarMaquinas.setText("Agregar");
@@ -238,35 +240,36 @@ public class Main extends javax.swing.JFrame {
             .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
         );
 
+        txtNombre.setEditable(false);
         txtNombre.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtNombre.setText("Nombre de maquina");
-        txtNombre.setEnabled(false);
 
+        txtDetalles.setEditable(false);
         txtDetalles.setColumns(20);
         txtDetalles.setRows(5);
         txtDetalles.setText("Modelo:\nNo. Serie:\nFecha de Compra:\nFecha Fabricacion:\nMade in ");
-        txtDetalles.setEnabled(false);
         jScrollPane1.setViewportView(txtDetalles);
 
+        jTextField2.setEditable(false);
         jTextField2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField2.setText("Tipos de Mantenimiento");
-        jTextField2.setEnabled(false);
 
+        jTextField3.setEditable(false);
         jTextField3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField3.setText("Predictivo");
-        jTextField3.setEnabled(false);
 
+        jTextField4.setEditable(false);
         jTextField4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField4.setText("Preventivo");
-        jTextField4.setEnabled(false);
 
+        jTextField5.setEditable(false);
         jTextField5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField5.setText("Correctivo");
-        jTextField5.setEnabled(false);
 
         listPreventivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         listPreventivo.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -438,14 +441,16 @@ public class Main extends javax.swing.JFrame {
         if (evt.getClickCount() == 2) {
             for(Mantenimiento m : machine.getMantenimientos()){
                 if(m.getNombre().equals(listPreventivo.getSelectedValue().toString())){
-                    for(int i=0; i<m.getFechas().size(); i++){
-                        System.out.println(m.getFechas().get(i));
-                        System.out.println("Costo = " + m.getCosto());
-                    }
-                    System.out.println("Costo total = " + m.getCostoTotal());
+                    ShowMaintenance.posMachine = Main.maquinas.indexOf(machine);
+                    ShowMaintenance.posMaintenance = machine.getMantenimientos().indexOf(m);
+                    ShowMaintenance maintenance = new ShowMaintenance(this, true);
+                    maintenance.setVisible(true);
                 }
             }
         }
+        
+        listPredictivo.clearSelection();
+        listCorrectivo.clearSelection();
     }//GEN-LAST:event_listPreventivoMouseClicked
 
     private void listPredictivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listPredictivoMouseClicked
@@ -453,14 +458,16 @@ public class Main extends javax.swing.JFrame {
         if (evt.getClickCount() == 2) {
             for(Mantenimiento m : machine.getMantenimientos()){
                 if(m.getNombre().equals(listPredictivo.getSelectedValue().toString())){
-                    for(int i=0; i<m.getFechas().size(); i++){
-                        System.out.println(m.getFechas().get(i));
-                        System.out.println("Costo = " + m.getCosto());
-                    }
-                    System.out.println("Costo total = " + m.getCostoTotal());
+                    ShowMaintenance.posMachine = Main.maquinas.indexOf(machine);
+                    ShowMaintenance.posMaintenance = machine.getMantenimientos().indexOf(m);
+                    ShowMaintenance maintenance = new ShowMaintenance(this, true);
+                    maintenance.setVisible(true);
                 }
             }
         }
+        
+        listPreventivo.clearSelection();
+        listCorrectivo.clearSelection();
     }//GEN-LAST:event_listPredictivoMouseClicked
 
     private void listCorrectivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_listCorrectivoMouseClicked
@@ -468,18 +475,38 @@ public class Main extends javax.swing.JFrame {
         if (evt.getClickCount() == 2) {
             for(Mantenimiento m : machine.getMantenimientos()){
                 if(m.getNombre().equals(listCorrectivo.getSelectedValue().toString())){
-                    for(int i=0; i<m.getFechas().size(); i++){
-                        System.out.println(m.getFechas().get(i));
-                        System.out.println("Costo = " + m.getCosto());
-                    }
-                    System.out.println("Costo total = " + m.getCostoTotal());
+                    ShowMaintenance.posMachine = Main.maquinas.indexOf(machine);
+                    ShowMaintenance.posMaintenance = machine.getMantenimientos().indexOf(m);
+                    ShowMaintenance maintenance = new ShowMaintenance(this, true);
+                    maintenance.setVisible(true);
                 }
             }
         }
+        
+        listPreventivo.clearSelection();
+        listPredictivo.clearSelection();
     }//GEN-LAST:event_listCorrectivoMouseClicked
 
     private void btnEliminarMaquinasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarMaquinasActionPerformed
-        this.ResetScreen();
+        for(Maquina m : Main.maquinas){
+            if(m.getNombre().equals(listMaquinas.getSelectedValue().toString())){
+                int pos = Main.maquinas.indexOf(m);
+                Main.maquinas.remove(pos);
+                
+                try {
+                    ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("Maquinas.dat"));
+                    oos.writeObject(Main.maquinas);
+                    oos.close();
+                    JOptionPane.showMessageDialog(null, "Dato eliminado exitosamente", "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+                    Main.RefrescarListaMaquina();
+                    this.ResetScreen();
+                    btnAgregarMantenimiento.setEnabled(false);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, "Ha ocurrido un error", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+                break;
+            }
+        }
     }//GEN-LAST:event_btnEliminarMaquinasActionPerformed
 
     private void LLenarDetalles(){
@@ -496,7 +523,7 @@ public class Main extends javax.swing.JFrame {
                         );
         
         ImageIcon ico = new ImageIcon(machine.getImagen());
-        Icon icono = new ImageIcon(ico.getImage().getScaledInstance(220, 180, Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(ico.getImage().getScaledInstance(155, 155, Image.SCALE_DEFAULT));
         lblImagen.setIcon(icono);
         this.repaint();
     }
@@ -583,10 +610,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JLabel lblImagen;
-    private javax.swing.JList listCorrectivo;
+    private static javax.swing.JList listCorrectivo;
     private static javax.swing.JList listMaquinas;
-    private javax.swing.JList listPredictivo;
-    private javax.swing.JList listPreventivo;
+    private static javax.swing.JList listPredictivo;
+    private static javax.swing.JList listPreventivo;
     private javax.swing.JPanel mainContainer;
     private javax.swing.JPanel panelImagen;
     private javax.swing.JTextArea txtDetalles;

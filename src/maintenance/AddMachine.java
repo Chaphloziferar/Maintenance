@@ -93,10 +93,10 @@ public class AddMachine extends javax.swing.JDialog {
             .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
         );
 
+        txtRuta.setEditable(false);
         txtRuta.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtRuta.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtRuta.setText("Ruta del archivo");
-        txtRuta.setEnabled(false);
 
         btnBuscarImagen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnBuscarImagen.setText("Buscar Imagen");
@@ -296,7 +296,7 @@ public class AddMachine extends javax.swing.JDialog {
             txtRuta.setText(path);
 
             ImageIcon ico = new ImageIcon(path);
-            Icon icono = new ImageIcon(ico.getImage().getScaledInstance(220, 180, Image.SCALE_DEFAULT));
+            Icon icono = new ImageIcon(ico.getImage().getScaledInstance(155, 155, Image.SCALE_DEFAULT));
             lblImagen.setIcon(icono);
             this.repaint();
             
@@ -376,7 +376,7 @@ public class AddMachine extends javax.swing.JDialog {
                 e.printStackTrace();
             }
             
-            Maquina maquina = new Maquina(txtNombre.getText(), txtModelo.getText(), txtSerie.getText(), dcFabricacion.getDate(), 
+            Maquina maquina = new Maquina(txtNombre.getText(), txtModelo.getText(), txtSerie.getText(), dcCompra.getDate(), 
                     dcFabricacion.getDate(), txtLugar.getText(), bFile);
             Main.maquinas.add(maquina);
             
